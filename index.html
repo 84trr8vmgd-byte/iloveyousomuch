@@ -4,8 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Happy Birthday, my love</title>
-  <link rel="stylesheet" href="style.css?v=5">
-  
+  <link rel="stylesheet" href="style.css?v=6-repaired">
 </head>
 <body data-view="home">
   <!-- Hintergrund und Startansicht; die Inhalte stehen direkt im Script darunter. -->
@@ -63,7 +62,7 @@ window.CONTENT = {
     ["", "", ""]  // Seite 8
   ],
 
-  // BONBONS: Sechs Rückseiten im Kreis.
+  // BONBONS: Sechs Rückseiten, sanft schwebend.
   treats: [
     { title: "Little treat 1", image: "" }, // assets/treats/treat-01.png
     { title: "Little treat 2", image: "" }, // assets/treats/treat-02.png
@@ -177,6 +176,17 @@ window.CONTENT = {
       image: "" }
   ]
 };
+/* FARBSTIMMUNGEN: Hintergrund, Verlauf, Schrift, kleine Texte, Akzent, Herzen/Sterne. */
+window.PAGE_MOODS = {
+ home: ['#f3e4e7','#fff5df','#513946','#755668','#a45e79','#bc789259'],
+ letters: ['#eee1cb','#fff8e8','#594737','#78634e','#986c53','#ac856050'],
+ letter: ['#eee1cb','#fff8e8','#594737','#78634e','#986c53','#ac856050'],
+ webtoon: ['#11172e','#302749','#f2edff','#c0b9d9','#cfb9f4','#ece2ffa3'],
+ giftcard: ['#dbeef8','#f2faff','#304f67','#536f85','#5c87a6','#74a6c34d'],
+ sketchbook: ['#e2e5d4','#f7f2e3','#435443','#63715b','#788866','#8b9a6952'],
+ treats: ['#f7dce8','#fff0f5','#743e59','#91556f','#b7688b','#ce779d61'],
+ vinyl: ['#dedddd','#f1eee9','#48454d','#68616b','#8a7785','#8f889148']
+};
 /* ================= ENDE DEINER INHALTE ================= */
 
 /* 2. EINGEBETTETE PLATZHALTER UND DEMO — NICHT BEARBEITEN */
@@ -206,6 +216,14 @@ const app = document.querySelector('#app');
 const route = location.hash.slice(1) || 'home';
 const view = route.split('?')[0];
 document.body.dataset.view = view;
+// Apply the mood on every navigation, including browser Back and direct links.
+
+const mood=window.PAGE_MOODS[view]||window.PAGE_MOODS.home;
+['bg','wash','ink','muted','accent','motif'].forEach((key,i)=>document.body.style.setProperty('--'+key,mood[i]));
+document.documentElement.style.backgroundColor=mood[0];
+document.body.style.background=`radial-gradient(ellipse at 12% 12%, ${mood[1]}, transparent 58%), ${mood[0]}`;
+document.body.style.backgroundAttachment='fixed';
+document.body.style.color=mood[2];
 document.querySelectorAll('.heart-sky span').forEach(star => { star.textContent = view==='webtoon' ? '✦' : '♡'; });
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pic = (src, cls='', alt='') => `<img class="${cls}" src="${esc(src)}" alt="${esc(alt)}">`;
@@ -253,13 +271,13 @@ if(view==='sketchbook') {
   const strips=[...sheet.children],width=spread.clientWidth/2,step=width/N;
   const duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:1200;
   await new Promise(resolve=>{let start;function frame(now){if(!sheet.isConnected){resolve();return;}if(start===undefined)start=now;const t=duration?Math.min((now-start)/duration,1):1;const ease=t*t*(3-2*t);const progress=dir>0?ease:1-ease;let x=0,z=0;
-   strips.forEach((strip,i)=>{const angle=-Math.PI*progress+Math.sin(Math.PI*progress)*.95*(i/N-.5);strip.style.width=(step+.35)+'px';strip.style.transform=`translate3d(${x}px,0,${z}px) rotateY(${angle}rad)`;strip.style.filter=`brightness(${1-.14*Math.sin(Math.PI*progress)*(i/N)})`;x+=step*Math.cos(angle);z-=step*Math.sin(angle);});
+   strips.forEach((strip,i)=>{const angle=-Math.PI*progress+Math.sin(Math.PI*progress)*.95*(i/N-.5);strip.style.width=(step+.35)+'px';strip.style.transform=`translate3d(${x}px,0,${z}px) rotateY(${angle}rad)`;x+=step*Math.cos(angle);z-=step*Math.sin(angle);});
    if(t<1)requestAnimationFrame(frame);else resolve();}requestAnimationFrame(frame);});
   if(!sheet.isConnected)return;page=dest;busy=false;paint();sheet.style.display='none';sheet.innerHTML='';
  }
  prev.onclick=()=>turn(-1);next.onclick=()=>turn(1);paint();
 }
-if(view==='treats') app.innerHTML=back()+heading('Little treats','Pick a sweet little surprise.')+`<button class="motion-toggle" id="float-toggle" aria-pressed="false">Kreis pausieren</button><section class="treat-cloud" aria-label="Kleine Überraschungen">${C.treats.map((t,i)=>`<div class="treat-orbit" style="--i:${i};--angle:${i*60}deg"><button class="treat-flip" aria-label="${esc(t.title)} aufdecken" aria-pressed="false"><span class="treat-front">${object('treats')}</span><span class="treat-back">${pic(t.image,'',t.title)}</span></button></div>`).join('')}</section>`;
+if(view==='treats') app.innerHTML=back()+heading('Little treats','Pick a sweet little surprise.')+`<button class="motion-toggle" id="float-toggle" aria-pressed="false">Schweben pausieren</button><section class="treat-cloud" aria-label="Kleine Überraschungen">${C.treats.map((t,i)=>`<div class="treat-orbit" style="--i:${i};--delay:-${i*1.2}s"><button class="treat-flip" aria-label="${esc(t.title)} aufdecken" aria-pressed="false"><span class="treat-front">${object('treats')}</span><span class="treat-back">${pic(t.image,'',t.title)}</span></button></div>`).join('')}</section>`;
 document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',async e=>{
  if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||e.button!==0)return;
  e.preventDefault();if(opening)return;opening=true;
@@ -275,7 +293,7 @@ document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click'
 }));
 document.querySelectorAll('.treat-flip').forEach(b=>b.onclick=()=>{const flipped=b.classList.toggle('flipped');b.setAttribute('aria-pressed',flipped);});
 function motionToggle(id,target,off,on){const b=document.querySelector(id);if(b)b.onclick=()=>{const paused=document.querySelector(target).classList.toggle('paused');b.setAttribute('aria-pressed',paused);b.textContent=paused?on:off;};}
-motionToggle('#record-toggle','.vinyl-disc','Drehung pausieren','Drehung starten');motionToggle('#float-toggle','.treat-cloud','Kreis pausieren','Kreis starten');
+motionToggle('#record-toggle','.vinyl-disc','Drehung pausieren','Drehung starten');motionToggle('#float-toggle','.treat-cloud','Schweben pausieren','Schweben starten');
 document.title=(names[view]|| (view==='letter'?'Dein Brief':'Just for you'))+' · For you';
 
 }
