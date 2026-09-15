@@ -3153,3 +3153,66 @@ header h1 { color: var(--ink); }
  .treat-front .object {transform:translate(-50%,-50%) scale(.56)}
 }
 @media(prefers-reduced-motion:reduce) {.landscape-gift,.treat-orbit,.treat-orbit:nth-child(n){animation:none;transform:none}.treat-flip{animation:none;transform:none}}
+/* CLOUDS AND STARS — retain the existing per-page color palettes. */
+.cloud-sky { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:-1; opacity:.58; }
+.cloud-sky i { position:absolute; width:290px; height:125px; left:-60px; top:16%; border-radius:90px; background:radial-gradient(ellipse at 28% 68%,#ffffffc4 0 27%,transparent 29%),radial-gradient(ellipse at 48% 45%,#ffffffc4 0 36%,transparent 38%),radial-gradient(ellipse at 73% 68%,#ffffffc4 0 27%,transparent 29%); animation:cloud-drift 24s ease-in-out infinite alternate; }
+.cloud-sky i:nth-child(2) {left:65%;top:4%;width:350px;animation-delay:-8s;opacity:.7}
+.cloud-sky i:nth-child(3) {left:78%;top:52%;animation-delay:-15s;opacity:.65}
+.cloud-sky i:nth-child(4) {left:7%;top:77%;width:370px;animation-delay:-5s}
+.cloud-sky i:nth-child(5) {left:40%;top:38%;width:210px;animation-delay:-19s;opacity:.4}
+@keyframes cloud-drift { from{transform:translateX(-25px)}to{transform:translateX(65px)} }
+body[data-view="webtoon"] .cloud-sky {opacity:.1}
+.heart-sky span {text-shadow:none;opacity:.7}
+.envelope {box-shadow:0 12px 20px #59473722,0 3px 5px #59473717;border-radius:5px}
+/* Cover frames: the artwork fits inside the object rather than covering its edges. */
+.book .cover {padding:11px 10px 11px 15px;background:#76677f;border-radius:3px 7px 7px 3px}
+.book.sketchbook .cover {background:#6f8177}
+.object .cover img {width:100%;height:100%;object-fit:contain;border-radius:2px}
+.sleeve {padding:11px;background:#786b85}
+.object .sleeve img {object-fit:contain}
+.gift-face {padding:8px;background:#c1a07c}
+.landscape-gift {padding:8px;background:#9eb8cb}
+.landscape-gift img {border-radius:4px}
+.inner-page {padding:11px;display:flex;align-items:center;justify-content:center}
+.object .inner-page .opening-preview {width:100%;height:100%;object-fit:contain;border-radius:0}
+/* Lightbox: tap a card or sweet; Escape, outside click, or × closes it. */
+#image-viewer {max-width:none;max-height:none;width:100vw;height:100dvh;padding:65px 22px 30px;inset:0;margin:0;border:0;background:transparent;color:var(--ink);overflow:auto}
+#image-viewer:not([open]) {display:none}
+#image-viewer[open] {display:grid;place-items:center}
+#image-viewer::backdrop {background:#181323bf;backdrop-filter:blur(8px)}
+.viewer-frame {position:relative;width:fit-content;max-width:92vw}
+.viewer-frame img {display:block;max-width:90vw;max-height:80dvh;width:auto;height:auto;object-fit:contain;background:var(--paper);border-radius:7px;box-shadow:0 18px 60px #0005}
+.viewer-close {position:absolute;right:-12px;top:-48px;width:42px;height:42px;border:0;border-radius:50%;background:#fff9f1;color:#4e3c46;font-size:30px;line-height:1;cursor:pointer}
+html:has(#image-viewer[open]) {overflow:hidden}
+/* Complete the cabinet sides and keep the jacket entirely beside the platter. */
+.deck-left {position:absolute;left:0;top:0;width:35px;height:100%;background:#785255;transform-origin:left;transform:rotateY(90deg)}
+.deck-back {position:absolute;left:0;top:0;width:100%;height:35px;background:#63464b;transform-origin:top;transform:rotateX(-90deg)}
+.deck-bottom {position:absolute;inset:0;background:#543c44;transform:translateZ(-35px)}
+.record-jacket {left:-190px;top:78px;width:145px;height:180px;padding:10px;background:#766580;transform:translateZ(10px) rotateZ(-8deg);box-shadow:4px 5px 0 #584457,8px 14px 22px #0002}
+.record-jacket img {width:100%;height:100%;object-fit:contain}
+.player-lid {padding:22px}
+.player-lid .lid-art {display:block;width:100%;height:100%;object-fit:contain;transform:rotateX(180deg)}
+@keyframes jacket-away {0%,20%{transform:translate3d(-30px,0,110px) rotateZ(-12deg)}60%,100%{transform:translate3d(0,0,10px) rotateZ(-8deg)}}
+/* A background photo curtain appears only during playback. */
+.music-rain {position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .6s}
+.music-playing .music-rain {opacity:1}
+.falling-photo {position:absolute;left:var(--x);top:-180px;width:100px;height:130px;padding:6px;background:#fff9;box-shadow:0 6px 12px #44394317;animation:photo-fall var(--duration) linear var(--delay) infinite;animation-play-state:paused;opacity:.42}
+.falling-photo img {width:100%;height:100%;object-fit:contain}
+.music-playing .falling-photo {animation-play-state:running}
+@keyframes photo-fall {from{transform:translateY(-80px) rotate(var(--tilt))}to{transform:translateY(calc(100vh + 360px)) rotate(calc(0deg - var(--tilt)))}}
+@media(max-width:700px) {
+ .cloud-sky {opacity:.38}.cloud-sky i {scale:.75}
+ .book .cover {padding:9px 8px 9px 13px}.landscape-gift {padding:6px}
+ .record-room .turntable,.record-theatre .turntable {zoom:.48}
+ .record-room {margin-top:125px;min-height:260px}.player-perspective {height:270px}
+ .record-jacket {left:-185px}
+ .falling-photo {width:62px;height:82px;padding:4px}
+}
+@media(max-width:380px) {.record-room .turntable,.record-theatre .turntable{zoom:.41}}
+@media(prefers-reduced-motion:reduce) {
+ .cloud-sky i {animation:none}.falling-photo {animation:none;top:calc(var(--x)*.7);transform:rotate(var(--tilt))}.music-rain{transition:none}
+}
+/* Keep the lid artwork strictly within its physical frame. */
+.player-lid .lid-art {position:absolute;inset:22px;width:calc(100% - 44px);height:calc(100% - 44px);min-width:0;min-height:0;object-fit:contain}
+.deck-bottom {transform:translateZ(-35px) rotateX(180deg);backface-visibility:hidden}
+@media(max-width:700px){.record-room .player-perspective{position:relative;left:15px}}
