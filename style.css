@@ -3292,3 +3292,390 @@ body[data-view="pokemon"] .cloud-sky{opacity:.08}
 @keyframes tearLeft{to{transform:translate(-95px,-80px) rotate(-28deg);opacity:0}}
 @keyframes tearRight{to{transform:translate(95px,-82px) rotate(30deg);opacity:0}}
 @media(prefers-reduced-motion:reduce){.pokemon-pack,.pack-shine{animation:none}.pokemon-pack.opened{animation:none;opacity:0}.pokemon-reveal{transition:none}}
+
+
+/* ============================================================
+   CINEMATIC POLISH v10
+   ============================================================ */
+:root{
+  --glass: rgba(255,255,255,.16);
+  --glass-strong: rgba(255,255,255,.26);
+  --line: rgba(255,255,255,.42);
+  --deep-shadow: 0 30px 80px rgba(28,20,32,.18);
+}
+html{scroll-behavior:smooth}
+body{
+  overflow-x:hidden;
+  background-attachment:fixed;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:-20vmax;
+  pointer-events:none;
+  z-index:-4;
+  background:
+    radial-gradient(circle at 25% 20%,color-mix(in srgb,var(--accent) 18%,transparent) 0 8%,transparent 28%),
+    radial-gradient(circle at 78% 18%,rgba(255,255,255,.3) 0 5%,transparent 23%),
+    radial-gradient(circle at 50% 80%,color-mix(in srgb,var(--accent) 10%,transparent) 0 10%,transparent 34%);
+  filter:blur(28px);
+  animation:bgDrift 20s ease-in-out infinite alternate;
+}
+@keyframes bgDrift{
+  from{transform:translate3d(-1.5%,-1%,0) scale(1)}
+  to{transform:translate3d(1.8%,1.2%,0) scale(1.035)}
+}
+header{
+  animation:heroIn .9s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes heroIn{
+  from{opacity:0;transform:translateY(24px) scale(.985)}
+  to{opacity:1;transform:none}
+}
+.collection{
+  perspective:1500px;
+}
+.keepsake{
+  isolation:isolate;
+  overflow:hidden;
+  transform-style:preserve-3d;
+  transition:
+    transform .5s cubic-bezier(.18,.8,.2,1),
+    box-shadow .5s,
+    border-color .4s,
+    background .4s;
+}
+.keepsake:after{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  z-index:-1;
+  opacity:0;
+  background:conic-gradient(from 160deg,transparent 0 30%,rgba(255,255,255,.24) 36%,transparent 44% 100%);
+  transition:opacity .35s;
+  animation:cardGleam 7s linear infinite;
+}
+.keepsake:hover:after{opacity:1}
+@keyframes cardGleam{to{transform:rotate(360deg)}}
+.keepsake:hover,.keepsake:focus-visible{
+  transform:translateY(-14px) rotateX(4deg) rotateY(-4deg) scale(1.035);
+  border-color:rgba(255,255,255,.78);
+  box-shadow:0 38px 90px rgba(37,25,41,.24),inset 0 1px rgba(255,255,255,.95);
+}
+.keepsake .object{
+  transition:transform .5s cubic-bezier(.18,.8,.2,1),filter .5s;
+}
+.keepsake:hover .object{
+  transform:translateY(-8px) rotate(-2deg) scale(1.045);
+  filter:drop-shadow(0 28px 20px rgba(22,17,28,.28));
+}
+.keepsake .label{
+  position:relative;
+  z-index:2;
+}
+.back{
+  backdrop-filter:blur(16px);
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:0 12px 35px rgba(0,0,0,.08);
+}
+
+/* subtle page entrance */
+#app > *{
+  animation:pageFade .55s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes pageFade{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+
+/* ============================================================
+   POKÉMON — EPIC OPENING
+   ============================================================ */
+body[data-view="pokemon"]{
+  background:
+    radial-gradient(circle at 50% 22%,rgba(107,139,255,.18),transparent 28%),
+    radial-gradient(circle at 50% 75%,rgba(41,84,197,.18),transparent 35%),
+    linear-gradient(155deg,#071126,#0c1d46 55%,#071127);
+}
+body[data-view="pokemon"] #app{
+  max-width:980px;
+}
+.pokemon-stage{
+  position:relative;
+  min-height:690px;
+  overflow:visible;
+  isolation:isolate;
+}
+.pokemon-stage:before{
+  content:"";
+  position:absolute;
+  inset:4% 8% auto;
+  height:520px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(108,143,255,.16),rgba(55,82,155,.07) 45%,transparent 72%);
+  filter:blur(16px);
+  z-index:-3;
+  animation:pulseHalo 4s ease-in-out infinite;
+}
+@keyframes pulseHalo{
+  0%,100%{transform:scale(.92);opacity:.55}
+  50%{transform:scale(1.05);opacity:1}
+}
+.pokemon-aura{
+  position:absolute;
+  inset:100px 50% auto;
+  width:420px;
+  height:420px;
+  transform:translateX(-50%);
+  pointer-events:none;
+  z-index:-2;
+}
+.pokemon-aura i{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:1px solid rgba(142,168,255,.22);
+  box-shadow:0 0 70px rgba(111,145,255,.16);
+  animation:auraSpin 12s linear infinite;
+}
+.pokemon-aura i:nth-child(2){inset:55px;animation-duration:9s;animation-direction:reverse}
+.pokemon-aura i:nth-child(3){inset:105px;animation-duration:6s}
+@keyframes auraSpin{to{transform:rotate(360deg)}}
+
+.pokemon-pack{
+  transition:filter .4s,transform .4s;
+}
+.pokemon-pack.charging{
+  animation:packCharge .72s ease-in-out infinite alternate;
+  filter:drop-shadow(0 0 20px rgba(111,150,255,.7)) drop-shadow(0 28px 45px rgba(0,0,0,.7));
+}
+@keyframes packCharge{
+  from{transform:translateY(-10px) rotateY(-9deg) rotateZ(-2deg) scale(1.02)}
+  to{transform:translateY(-18px) rotateY(9deg) rotateZ(2deg) scale(1.055)}
+}
+.pokemon-stage.opening-sequence:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:0;
+  background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.85),rgba(130,160,255,.34) 12%,transparent 38%);
+  animation:flashBuild 1.15s ease-out forwards;
+  z-index:6;
+  mix-blend-mode:screen;
+}
+@keyframes flashBuild{
+  0%{opacity:0;transform:scale(.7)}
+  55%{opacity:.35}
+  100%{opacity:0;transform:scale(1.25)}
+}
+.pokemon-stage.impact{
+  animation:stageImpact .46s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes stageImpact{
+  0%,100%{transform:translate(0)}
+  20%{transform:translate(-8px,4px)}
+  40%{transform:translate(7px,-3px)}
+  60%{transform:translate(-5px,2px)}
+  80%{transform:translate(3px,-1px)}
+}
+.pokemon-pack.opened{
+  animation:packRipEpic 1.05s cubic-bezier(.15,.85,.15,1) forwards;
+}
+@keyframes packRipEpic{
+  0%{transform:scale(1.055) rotateZ(0deg)}
+  30%{transform:scale(1.12) rotateZ(-2deg)}
+  55%{transform:scale(1.08) rotateZ(2deg)}
+  75%{transform:scale(.98) translateY(14px)}
+  100%{transform:scale(.9) translateY(55px);opacity:.55}
+}
+.pokemon-pack.opened .tear-left{
+  animation:tearLeftEpic 1s cubic-bezier(.16,.84,.22,1) forwards;
+}
+.pokemon-pack.opened .tear-right{
+  animation:tearRightEpic 1s cubic-bezier(.16,.84,.22,1) forwards;
+}
+@keyframes tearLeftEpic{
+  0%{transform:none;opacity:1}
+  40%{transform:translate(-38px,-35px) rotate(-12deg);opacity:1}
+  100%{transform:translate(-150px,-160px) rotate(-42deg) scale(.82);opacity:0}
+}
+@keyframes tearRightEpic{
+  0%{transform:none;opacity:1}
+  40%{transform:translate(38px,-36px) rotate(12deg);opacity:1}
+  100%{transform:translate(150px,-165px) rotate(45deg) scale(.82);opacity:0}
+}
+.pokemon-spark-field{
+  position:absolute;
+  left:50%;
+  top:265px;
+  width:1px;height:1px;
+  z-index:10;
+  pointer-events:none;
+}
+.pokemon-spark-field i{
+  position:absolute;
+  width:7px;height:7px;
+  border-radius:50%;
+  background:#dce7ff;
+  box-shadow:0 0 16px #8daaff,0 0 30px rgba(141,170,255,.7);
+  transform:rotate(var(--a)) translateX(0);
+  opacity:0;
+}
+.pokemon-stage.opening-sequence .pokemon-spark-field i{
+  animation:sparkBurst 1s cubic-bezier(.18,.8,.2,1) forwards;
+  animation-delay:var(--delay);
+}
+@keyframes sparkBurst{
+  0%{opacity:0;transform:rotate(var(--a)) translateX(0) scale(.4)}
+  25%{opacity:1}
+  100%{opacity:0;transform:rotate(var(--a)) translateX(var(--d)) scale(1.3)}
+}
+
+/* reveal cards feel more collectible and cinematic */
+.pokemon-reveal-stack{
+  position:relative;
+  z-index:2;
+}
+.pokemon-reveal{
+  filter:drop-shadow(0 30px 42px rgba(0,0,0,.35));
+}
+.pokemon-reveal.shown{
+  animation:cardLand .95s cubic-bezier(.17,.86,.24,1) both;
+}
+@keyframes cardLand{
+  0%{opacity:0;transform:translateY(95px) rotate(8deg) scale(.72)}
+  65%{opacity:1;transform:translateY(-8px) rotate(-1deg) scale(1.025)}
+  100%{opacity:1;transform:translateY(0) rotate(0) scale(1)}
+}
+.pokemon-card-media{
+  position:relative;
+  overflow:hidden;
+}
+.pokemon-card-media:after{
+  content:"";
+  position:absolute;
+  inset:-40% -70%;
+  background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.5) 49%,transparent 63%);
+  transform:translateX(-55%);
+  animation:cardFoil 3.8s ease-in-out infinite;
+}
+@keyframes cardFoil{
+  0%,35%{transform:translateX(-55%)}
+  70%,100%{transform:translateX(55%)}
+}
+
+/* FINAL GIF: deliberately slow, dramatic reveal */
+body.pokemon-finale-mode{
+  overflow-x:hidden;
+}
+body.pokemon-finale-mode:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:35;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(118,148,255,.18),transparent 32%),
+    rgba(4,8,22,.18);
+  backdrop-filter:blur(3px);
+  animation:finaleVignette 5.4s ease forwards;
+}
+@keyframes finaleVignette{
+  0%{opacity:0}
+  20%,80%{opacity:1}
+  100%{opacity:.35}
+}
+.pokemon-reveal.finale{
+  z-index:40;
+  opacity:0;
+  transform:translateY(120px) scale(.58) rotate(-4deg);
+}
+.pokemon-reveal.finale.finale-entering{
+  display:block;
+}
+.pokemon-reveal.finale.finale-entering.shown{
+  animation:finaleReveal 5.2s cubic-bezier(.12,.76,.18,1) forwards;
+}
+@keyframes finaleReveal{
+  0%{
+    opacity:0;
+    transform:translateY(120px) scale(.58) rotate(-4deg);
+    filter:blur(14px) brightness(.45);
+  }
+  18%{
+    opacity:.18;
+    transform:translateY(75px) scale(.7) rotate(-2deg);
+    filter:blur(10px) brightness(.65);
+  }
+  42%{
+    opacity:.5;
+    transform:translateY(28px) scale(.84) rotate(-1deg);
+    filter:blur(6px) brightness(.8);
+  }
+  72%{
+    opacity:.82;
+    transform:translateY(-8px) scale(1.025) rotate(.4deg);
+    filter:blur(1.5px) brightness(1.05);
+  }
+  100%{
+    opacity:1;
+    transform:translateY(0) scale(1) rotate(0);
+    filter:blur(0) brightness(1);
+  }
+}
+.pokemon-reveal.finale .pokemon-card-media{
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.72),
+    0 0 0 1px rgba(255,255,255,.55) inset,
+    0 0 70px rgba(113,148,255,.5);
+}
+.pokemon-reveal.finale.finale-entering .pokemon-card-media:before{
+  content:"";
+  position:absolute;
+  inset:-18%;
+  border-radius:30%;
+  background:conic-gradient(from 0deg,transparent,rgba(144,172,255,.28),transparent 28%,rgba(255,255,255,.28),transparent 52%,rgba(118,151,255,.3),transparent);
+  filter:blur(20px);
+  animation:finaleHalo 5.5s linear infinite;
+  z-index:-1;
+}
+@keyframes finaleHalo{to{transform:rotate(360deg)}}
+.pokemon-reveal.finale.finale-complete{
+  animation:finaleFloat 4.5s ease-in-out infinite;
+}
+@keyframes finaleFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-10px) scale(1.012)}
+}
+
+/* prettier buttons */
+.pokemon-next{
+  position:relative;
+  overflow:hidden;
+  transition:transform .25s,background .25s,box-shadow .25s;
+}
+.pokemon-next:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.16),transparent 80%);
+  transform:translateX(-120%);
+  transition:transform .5s;
+}
+.pokemon-next:hover:before{transform:translateX(120%)}
+.pokemon-next:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 16px 38px rgba(0,0,0,.3),0 0 26px rgba(112,148,255,.18);
+}
+
+@media(max-width:700px){
+  .pokemon-aura{width:320px;height:320px;top:125px}
+  .pokemon-stage{min-height:620px}
+  .pokemon-pack{width:205px;height:295px}
+}
+@media(prefers-reduced-motion:reduce){
+  body:before,.pokemon-aura i,.pokemon-stage:before,.keepsake:after{animation:none!important}
+  .pokemon-reveal.finale.finale-entering.shown{animation:none!important;opacity:1;transform:none;filter:none}
+}
