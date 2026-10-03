@@ -4352,3 +4352,254 @@ header::before{
     100%{transform:translate(150px,-88px) rotate(44deg) scale(.76);opacity:0}
   }
 }
+
+
+/* ============================================================
+   CLEAN MOTION v19 — unclipped, contained, smoother
+   ============================================================ */
+
+/* Let animations breathe outside cards without visual clipping */
+.keepsake{
+  overflow:visible!important;
+  isolation:visible!important;
+  padding-top:34px;
+}
+.animation-stage{
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:100%;
+  min-height:220px;
+  overflow:visible;
+  perspective:1400px;
+  transform-style:preserve-3d;
+  z-index:2;
+}
+.animation-stage::before{
+  content:"";
+  position:absolute;
+  inset:16% 12%;
+  border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--accent) 14%,transparent),transparent 68%);
+  filter:blur(18px);
+  opacity:.55;
+  z-index:-1;
+  pointer-events:none;
+}
+
+/* Kill conflicting older object animations during opening states */
+.keepsake.opening-active .object,
+.keepsake.opening-active .animated-object{
+  animation:none!important;
+  transition:none!important;
+}
+.keepsake:hover .animated-object{
+  animation:cleanObjectFloat 2.4s ease-in-out infinite!important;
+}
+@keyframes cleanObjectFloat{
+  0%,100%{transform:translate3d(0,-5px,0) rotate(-.8deg) scale(1.025)}
+  50%{transform:translate3d(0,-11px,0) rotate(.8deg) scale(1.04)}
+}
+
+/* Cleaner envelope opening: smaller travel, better layering */
+.keepsake.letters-link .envelope{
+  position:relative;
+  transform-style:preserve-3d;
+  overflow:visible;
+}
+.keepsake.letters-link.opening-active .envelope{
+  animation:cleanEnvelopeLift .52s cubic-bezier(.18,.8,.22,1) forwards!important;
+}
+.keepsake.letters-link.opening-active .flap{
+  z-index:6;
+  animation:cleanFlap .4s cubic-bezier(.18,.8,.22,1) forwards!important;
+}
+.keepsake.letters-link.opening-active .left-fold{
+  z-index:4;
+  animation:cleanLeftFold .42s .04s cubic-bezier(.18,.8,.22,1) forwards!important;
+}
+.keepsake.letters-link.opening-active .right-fold{
+  z-index:4;
+  animation:cleanRightFold .42s .04s cubic-bezier(.18,.8,.22,1) forwards!important;
+}
+.keepsake.letters-link.opening-active .bottom-fold{
+  z-index:5;
+  animation:cleanBottomFold .42s .05s cubic-bezier(.18,.8,.22,1) forwards!important;
+}
+.keepsake.letters-link.opening-active .note{
+  z-index:10;
+  animation:cleanLetterReveal .46s .08s cubic-bezier(.16,.86,.2,1) forwards!important;
+}
+@keyframes cleanEnvelopeLift{
+  from{transform:translateY(0) scale(1)}
+  to{transform:translateY(-6px) scale(1.025)}
+}
+@keyframes cleanFlap{to{transform:rotateX(-165deg)}}
+@keyframes cleanLeftFold{to{transform:rotateY(-72deg)}}
+@keyframes cleanRightFold{to{transform:rotateY(72deg)}}
+@keyframes cleanBottomFold{to{transform:rotateX(62deg)}}
+@keyframes cleanLetterReveal{
+  0%{transform:translateY(0) scale(.985);opacity:.98}
+  70%{transform:translateY(-58px) scale(1.015);opacity:1}
+  100%{transform:translateY(-64px) scale(1.02);opacity:1}
+}
+
+/* Cleaner books: controlled cover arc, no extreme 178° travel */
+.keepsake.webtoon-link .book,
+.keepsake.sketchbook-link .book{
+  overflow:visible;
+  transform-style:preserve-3d;
+}
+.keepsake.webtoon-link.opening-active .book,
+.keepsake.sketchbook-link.opening-active .book{
+  animation:cleanBookLift .58s cubic-bezier(.18,.82,.2,1) forwards!important;
+}
+.keepsake.webtoon-link.opening-active .cover,
+.keepsake.sketchbook-link.opening-active .cover{
+  backface-visibility:hidden;
+  animation:cleanBookCover .56s cubic-bezier(.18,.82,.2,1) forwards!important;
+}
+.keepsake.webtoon-link.opening-active .inner-page,
+.keepsake.sketchbook-link.opening-active .inner-page{
+  animation:cleanInnerPage .5s .05s ease-out forwards!important;
+}
+@keyframes cleanBookLift{
+  from{transform:translateY(0) scale(1)}
+  to{transform:translateY(-7px) scale(1.03)}
+}
+@keyframes cleanBookCover{
+  0%{transform:rotateY(0)}
+  100%{transform:rotateY(-142deg)}
+}
+@keyframes cleanInnerPage{
+  from{transform:translateZ(0) scale(.985);filter:brightness(.9)}
+  to{transform:translateZ(10px) scale(1);filter:brightness(1)}
+}
+
+/* Cleaner vinyl: slide only enough to stay visually attached */
+.keepsake.vinyl-link .record{
+  overflow:visible;
+}
+.keepsake.vinyl-link.opening-active .record{
+  animation:cleanVinylLift .62s cubic-bezier(.18,.82,.2,1) forwards!important;
+}
+.keepsake.vinyl-link.opening-active .sleeve{
+  animation:cleanSleeve .58s cubic-bezier(.18,.82,.2,1) forwards!important;
+}
+.keepsake.vinyl-link.opening-active .disc{
+  animation:cleanDiscSlide .6s cubic-bezier(.14,.86,.2,1) forwards!important;
+  z-index:5;
+}
+@keyframes cleanVinylLift{
+  from{transform:translateY(0) scale(1)}
+  to{transform:translateY(-7px) scale(1.03)}
+}
+@keyframes cleanSleeve{
+  to{transform:rotateY(-10deg) translateX(-2px)}
+}
+@keyframes cleanDiscSlide{
+  0%{transform:translateX(0) rotate(0)}
+  72%{transform:translateX(62px) rotate(105deg)}
+  100%{transform:translateX(70px) rotate(135deg)}
+}
+
+/* Opening glow contained inside animation stage */
+.keepsake.opening-active{
+  z-index:20;
+  box-shadow:
+    0 28px 72px rgba(28,20,38,.18),
+    0 0 32px color-mix(in srgb,var(--accent) 18%,transparent),
+    inset 0 1px 0 rgba(255,255,255,.88)!important;
+}
+.keepsake.opening-active .animation-stage::after{
+  content:"";
+  position:absolute;
+  inset:8% 10%;
+  border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--accent) 20%,transparent),transparent 70%);
+  filter:blur(16px);
+  animation:cleanGlowPulse .6s ease-out forwards;
+  z-index:-1;
+}
+@keyframes cleanGlowPulse{
+  0%{opacity:0;transform:scale(.85)}
+  45%{opacity:.9;transform:scale(1.05)}
+  100%{opacity:.25;transform:scale(1)}
+}
+
+/* Pokemon: keep effects in stage, reduce crazy offscreen travel */
+.pokemon-stage{
+  overflow:visible!important;
+  padding-inline:32px;
+}
+.pokemon-pack{
+  transform-origin:center;
+}
+.pokemon-pack.opened .split-left{
+  animation:cleanSplitLeft .58s cubic-bezier(.12,.84,.16,1) forwards!important;
+}
+.pokemon-pack.opened .split-right{
+  animation:cleanSplitRight .58s cubic-bezier(.12,.84,.16,1) forwards!important;
+}
+@keyframes cleanSplitLeft{
+  0%{transform:none;opacity:1}
+  40%{transform:translate(-24px,-8px) rotate(-8deg) scale(1.015);opacity:1}
+  100%{transform:translate(-120px,-52px) rotate(-28deg) scale(.9);opacity:0}
+}
+@keyframes cleanSplitRight{
+  0%{transform:none;opacity:1}
+  40%{transform:translate(24px,-8px) rotate(8deg) scale(1.015);opacity:1}
+  100%{transform:translate(120px,-52px) rotate(28deg) scale(.9);opacity:0}
+}
+.pokemon-stage.impact{
+  animation:cleanImpact .22s ease-out!important;
+}
+@keyframes cleanImpact{
+  0%{transform:translateX(0)}
+  30%{transform:translateX(-4px)}
+  60%{transform:translateX(4px)}
+  100%{transform:translateX(0)}
+}
+.pokemon-reveal.shown{
+  animation:cleanCardReveal .58s cubic-bezier(.12,.86,.18,1) both!important;
+}
+@keyframes cleanCardReveal{
+  0%{opacity:0;transform:translateY(34px) scale(.84);filter:blur(5px)}
+  65%{opacity:1;transform:translateY(-4px) scale(1.02);filter:none}
+  100%{opacity:1;transform:none;filter:none}
+}
+
+/* prevent box pseudo-elements from looking chopped during motion */
+.keepsake::before,
+.keepsake::after{
+  pointer-events:none;
+}
+.keepsake.opening-active::before{
+  opacity:.18;
+}
+.keepsake.opening-active::after{
+  opacity:.4;
+  animation:none!important;
+}
+
+/* mobile containment */
+@media(max-width:700px){
+  .animation-stage{min-height:190px}
+  .keepsake{padding-top:24px}
+  @keyframes cleanLetterReveal{
+    0%{transform:translateY(0) scale(.985)}
+    100%{transform:translateY(-42px) scale(1.015)}
+  }
+  @keyframes cleanDiscSlide{
+    0%{transform:translateX(0) rotate(0)}
+    100%{transform:translateX(48px) rotate(110deg)}
+  }
+  @keyframes cleanSplitLeft{
+    0%{transform:none;opacity:1}
+    100%{transform:translate(-82px,-42px) rotate(-24deg) scale(.9);opacity:0}
+  }
+  @keyframes cleanSplitRight{
+    0%{transform:none;opacity:1}
+    100%{transform:translate(82px,-42px) rotate(24deg) scale(.9);opacity:0}
+  }
+}
