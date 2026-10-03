@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Happy Birthday, my love</title>
-  <link rel="stylesheet" href="style.css?v=9-clickfix">
+  <link rel="stylesheet" href="style.css?v=10-cinematic">
 </head>
 <body data-view="home">
   <!-- Hintergrund und Startansicht; die Inhalte stehen direkt im Script darunter. -->
@@ -239,7 +239,7 @@ const app = document.querySelector('#app');
 const route = location.hash.slice(1) || 'home';
 const view = route.split('?')[0];
 document.body.dataset.view = view;
-document.body.classList.remove('music-playing');
+document.body.classList.remove('music-playing','pokemon-finale-mode');
 document.querySelector('.music-rain')?.remove();
 document.querySelector('#image-viewer')?.close();
 // Apply the mood on every navigation, including browser Back and direct links.
@@ -296,14 +296,41 @@ if(view==='pokemon'){
   const showNext=()=>{
     step++;
     if(step<cards.length){
-      cards[step].classList.add('shown');
+      const card=cards[step];
+      if(step===cards.length-1){
+        document.body.classList.add('pokemon-finale-mode');
+        card.classList.add('finale-entering');
+        next.hidden=true;
+        setTimeout(()=>card.classList.add('shown'),520);
+        setTimeout(()=>card.classList.add('finale-complete'),5200);
+      }else{
+        card.classList.add('shown');
+      }
       if(step===cards.length-1){ next.hidden=true; }
     }
   };
   pack.addEventListener('click',()=>{
     if(pack.classList.contains('opened')) return;
-    pack.classList.add('opened');
-    setTimeout(()=>{ pack.classList.add('gone'); showNext(); next.hidden=cards.length<=1; },760);
+    const stage=document.querySelector('.pokemon-stage');
+    const sparkField=document.getElementById('pokemon-spark-field');
+    pack.classList.add('charging');
+    stage?.classList.add('opening-sequence');
+
+    // lightweight spark burst
+    if(sparkField){
+      sparkField.innerHTML=Array.from({length:24},(_,i)=>
+        '<i style="--i:'+i+';--a:'+(i*15)+'deg;--d:'+(80+(i%6)*18)+'px;--delay:'+(i%5)*18+'ms"></i>'
+      ).join('');
+    }
+
+    setTimeout(()=>pack.classList.add('opened'),520);
+    setTimeout(()=>stage?.classList.add('impact'),900);
+    setTimeout(()=>{
+      pack.classList.add('gone');
+      stage?.classList.remove('impact');
+      showNext();
+      next.hidden=cards.length<=1;
+    },1650);
   });
   next.addEventListener('click',showNext);
 }
