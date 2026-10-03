@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Happy Birthday, my love</title>
-  <link rel="stylesheet" href="style.css?v=14-clickfix">
+  <link rel="stylesheet" href="style.css?v=15-parsefix">
 </head>
 <body data-view="home" class="pretty-site">
   <!-- Hintergrund und Startansicht; die Inhalte stehen direkt im Script darunter. -->
@@ -232,44 +232,59 @@ if(view==='pokemon'){
   const cfg = C.pokemon || {packCover:"",reveals:["","","",""]};
   const revealMarkup = (cfg.reveals||[]).map((src,i)=>{
     const isGif=i===3;
-    return '<article class="pokemon-reveal '+(isGif?'finale':'')+'" data-reveal="'+i+'"><div class="pokemon-card-media">'+
-      (src ? '<img src="'+src+'" alt="'+(isGif?'Final GIF':'Photo '+(i+1))+'">' :
-      '<div class="pokemon-placeholder"><span>'+(isGif?'GIF':'PHOTO '+(i+1))+'</span><small>'+(isGif?'assets/pokemon/finale.gif':'assets/pokemon/photo-0'+(i+1)+'.png')+'</small></div>')+
-      '</div><p>'+(isGif?'final surprise ♡':'memory '+(i+1))+'</p></article>';
+    return `<article class="pokemon-reveal ${isGif?'finale':''}" data-reveal="${i}">
+      <div class="pokemon-card-media">
+        ${src
+          ? `<img src="${esc(src)}" alt="${isGif?'Final GIF':'Photo '+(i+1)}">`
+          : `<div class="pokemon-placeholder"><span>${isGif?'GIF':'PHOTO '+(i+1)}</span><small>${isGif?'assets/pokemon/finale.gif':'assets/pokemon/photo-0'+(i+1)+'.png'}</small></div>`
+        }
+      </div>
+      <p>${isGif?'final surprise ♡':'memory '+(i+1)}</p>
+    </article>`;
   }).join('');
-  app.innerHTML=back()+heading('Pokémon surprise','Tap the pack to rip it open.')+
-  '<section class="pokemon-stage"><button class="pokemon-pack split-pack" id="pokemon-pack" type="button" aria-label="Open Pokémon pack">
-      <span class="pack-base">'+
-    (cfg.packCover?'<img src="'+cfg.packCover+'" alt="Pokémon pack cover">':'<span class="pack-face"><span class="pack-shine"></span><b>POKÉMON</b><em>special pack</em><small>tap to open</small></span>')+
-    '<span class="tear tear-left"></span><span class="tear tear-right"></span></span>
-      <span class="split-left" aria-hidden="true">'+
-    (cfg.packCover?'<img src="'+cfg.packCover+'" alt="Pokémon pack cover">':'<span class="pack-face"><span class="pack-shine"></span><b>POKÉMON</b><em>special pack</em><small>tap to open</small></span>')+
-    '<span class="tear tear-left"></span><span class="tear tear-right"></span></span>
-      <span class="split-right" aria-hidden="true">'+
-    (cfg.packCover?'<img src="'+cfg.packCover+'" alt="Pokémon pack cover">':'<span class="pack-face"><span class="pack-shine"></span><b>POKÉMON</b><em>special pack</em><small>tap to open</small></span>')+
-    '<span class="tear tear-left"></span><span class="tear tear-right"></span></span>
-      <span class="split-flash" aria-hidden="true"></span>
-    </button>'+
-    '<div class="pokemon-reveal-stack" id="pokemon-reveal-stack">'+revealMarkup+'</div>'+
-    '<button class="pokemon-next" id="pokemon-next" type="button" hidden>Reveal next</button></section>';
+
+  const packVisual = cfg.packCover
+    ? `<img src="${esc(cfg.packCover)}" alt="Pokémon pack cover">`
+    : `<span class="pack-face"><span class="pack-shine"></span><b>POKÉMON</b><em>special pack</em><small>tap to open</small></span>`;
+
+  app.innerHTML = back()+heading('Pokémon surprise','Tap the pack to rip it open.')+`
+    <section class="pokemon-stage">
+      <button class="pokemon-pack split-pack" id="pokemon-pack" type="button" aria-label="Open Pokémon pack">
+        <span class="pack-base">${packVisual}<span class="tear tear-left"></span><span class="tear tear-right"></span></span>
+        <span class="split-left" aria-hidden="true">${packVisual}<span class="tear tear-left"></span><span class="tear tear-right"></span></span>
+        <span class="split-right" aria-hidden="true">${packVisual}<span class="tear tear-left"></span><span class="tear tear-right"></span></span>
+        <span class="split-flash" aria-hidden="true"></span>
+      </button>
+      <div class="pokemon-reveal-stack" id="pokemon-reveal-stack">${revealMarkup}</div>
+      <button class="pokemon-next" id="pokemon-next" type="button" hidden>Reveal next</button>
+    </section>`;
+
   const pack=document.getElementById('pokemon-pack');
   const next=document.getElementById('pokemon-next');
   const cards=[...document.querySelectorAll('.pokemon-reveal')];
   let step=-1;
+
   const showNext=()=>{
     step++;
     if(step<cards.length){
       cards[step].classList.add('shown');
-      if(step===cards.length-1){ next.hidden=true; }
+      if(step===cards.length-1) next.hidden=true;
     }
   };
-  pack.addEventListener('click',()=>{
-    if(pack.classList.contains('opened')) return;
-    pack.classList.add('splitting');
-    setTimeout(()=>pack.classList.add('opened'),420);
-    setTimeout(()=>{ pack.classList.add('gone'); showNext(); next.hidden=cards.length<=1; },760);
-  });
-  next.addEventListener('click',showNext);
+
+  if(pack){
+    pack.addEventListener('click',()=>{
+      if(pack.classList.contains('opened')) return;
+      pack.classList.add('splitting');
+      setTimeout(()=>pack.classList.add('opened'),420);
+      setTimeout(()=>{
+        pack.classList.add('gone');
+        showNext();
+        if(next) next.hidden=cards.length<=1;
+      },760);
+    });
+  }
+  if(next) next.addEventListener('click',showNext);
 }
 
 if(view!=='pokemon' && view==='vinyl') {
@@ -313,7 +328,12 @@ document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click'
  document.querySelector('.record-theatre')?.remove();
  document.body.classList.remove('opening-scene','leaving');
  el.classList.add('opening');
- location.hash=href;
+ if(location.hash===href){
+   render();
+   window.scrollTo(0,0);
+ }else{
+   location.hash=href;
+ }
 }));
 document.querySelectorAll('.treat-flip').forEach(b=>b.onclick=()=>{const flipped=b.classList.toggle('flipped');b.setAttribute('aria-pressed',flipped);const img=b.querySelector('.treat-back img');if(img)showPicture(img.src,img.alt);});
 function motionToggle(id,target,off,on){const b=document.querySelector(id);if(b)b.onclick=()=>{const paused=document.querySelector(target).classList.toggle('paused');b.setAttribute('aria-pressed',paused);b.textContent=paused?on:off;};}
