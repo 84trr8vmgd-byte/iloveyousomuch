@@ -3679,3 +3679,364 @@ body.pokemon-finale-mode:after{
   body:before,.pokemon-aura i,.pokemon-stage:before,.keepsake:after{animation:none!important}
   .pokemon-reveal.finale.finale-entering.shown{animation:none!important;opacity:1;transform:none;filter:none}
 }
+
+
+/* =========================================================
+   ULTRA POLISH v11 — whole-site motion + richer depth
+   ========================================================= */
+body{
+  position:relative;
+  background:
+    radial-gradient(circle at 20% 12%,color-mix(in srgb,var(--wash) 75%,transparent),transparent 28%),
+    radial-gradient(circle at 82% 16%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 24%),
+    linear-gradient(145deg,var(--bg),var(--wash));
+  transition:background .8s ease,color .55s ease;
+}
+.ambient-orbs{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-3;
+  overflow:hidden;
+}
+.ambient-orbs i{
+  position:absolute;
+  width:34vmin;height:34vmin;
+  border-radius:50%;
+  filter:blur(60px);
+  opacity:.13;
+  background:var(--accent);
+  animation:ambientFloat 18s ease-in-out infinite alternate;
+}
+.ambient-orbs i:nth-child(1){left:-8vmin;top:8vh}
+.ambient-orbs i:nth-child(2){right:-10vmin;top:18vh;animation-duration:22s}
+.ambient-orbs i:nth-child(3){left:28vw;bottom:-14vmin;animation-duration:25s}
+.ambient-orbs i:nth-child(4){right:22vw;bottom:10vh;animation-duration:20s}
+@keyframes ambientFloat{
+  from{transform:translate3d(-2vw,-1vh,0) scale(.9)}
+  to{transform:translate3d(3vw,3vh,0) scale(1.12)}
+}
+header{
+  position:relative;
+}
+header:after{
+  content:"";
+  display:block;
+  width:min(220px,40vw);
+  height:1px;
+  margin:28px auto 0;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:.4;
+  animation:lineGlow 4s ease-in-out infinite;
+}
+@keyframes lineGlow{50%{opacity:.9;transform:scaleX(1.14)}}
+
+.home-staggered{
+  opacity:0;
+  animation:homeCardIn .8s cubic-bezier(.16,.84,.2,1) forwards;
+  animation-delay:var(--stagger);
+}
+@keyframes homeCardIn{
+  from{opacity:0;transform:translateY(28px) scale(.94) rotateX(7deg)}
+  to{opacity:1;transform:none}
+}
+.keepsake{
+  min-height:330px;
+  padding:28px 18px 24px;
+  border-radius:30px;
+  background:linear-gradient(145deg,rgba(255,255,255,.25),rgba(255,255,255,.09));
+  border:1px solid rgba(255,255,255,.42);
+  box-shadow:
+    0 22px 60px rgba(30,24,36,.11),
+    inset 0 1px 0 rgba(255,255,255,.72);
+  backdrop-filter:blur(18px) saturate(1.08);
+  -webkit-backdrop-filter:blur(18px) saturate(1.08);
+}
+.keepsake:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:linear-gradient(120deg,rgba(255,255,255,.26),transparent 36% 68%,rgba(255,255,255,.08));
+  opacity:.65;
+}
+.keepsake:hover,.keepsake:focus-visible{
+  transform:translateY(-16px) scale(1.035) rotateX(3deg);
+  box-shadow:
+    0 34px 80px rgba(28,22,34,.2),
+    0 0 0 1px rgba(255,255,255,.45) inset,
+    0 0 42px color-mix(in srgb,var(--accent) 18%,transparent);
+}
+.cinematic-object{
+  will-change:transform,filter;
+}
+.keepsake:hover .cinematic-object{
+  animation:objectHover 2.6s ease-in-out infinite;
+}
+@keyframes objectHover{
+  0%,100%{transform:translateY(-7px) rotate(-1.5deg) scale(1.035)}
+  50%{transform:translateY(-14px) rotate(1deg) scale(1.055)}
+}
+.label{
+  font-size:1.25rem;
+  letter-spacing:.01em;
+  text-shadow:0 1px 0 rgba(255,255,255,.45);
+}
+
+/* ENVELOPE: richer hover/open illusion */
+.envelope{
+  filter:drop-shadow(0 22px 18px rgba(62,43,44,.22));
+}
+.keepsake:hover .envelope .flap{
+  animation:flapTease 1.4s ease-in-out infinite alternate;
+}
+@keyframes flapTease{
+  from{transform:rotateX(0deg)}
+  to{transform:rotateX(-18deg)}
+}
+.envelope .note{
+  transition:transform .6s cubic-bezier(.18,.78,.2,1),box-shadow .6s;
+}
+.keepsake:hover .envelope .note{
+  transform:translateY(-10px);
+  box-shadow:0 12px 20px rgba(53,40,40,.12);
+}
+
+/* BOOKS: page shimmer and opening depth */
+.book{
+  filter:drop-shadow(0 24px 18px rgba(29,25,36,.22));
+}
+.book .cover{
+  transition:transform .7s cubic-bezier(.16,.82,.18,1),filter .5s;
+}
+.keepsake:hover .book .cover{
+  transform:rotateY(-18deg);
+  filter:brightness(1.04);
+}
+.book .pages:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.42),transparent);
+  transform:translateX(-120%);
+}
+.keepsake:hover .book .pages:after{
+  animation:pageSheen 1.35s ease-out;
+}
+@keyframes pageSheen{to{transform:translateX(120%)}}
+
+/* GIFT CARD: subtle luxury shimmer */
+.gift-face{
+  position:relative;
+  box-shadow:0 20px 34px rgba(42,49,62,.18);
+}
+.gift-face:after{
+  content:"";
+  position:absolute;
+  inset:-60% -80%;
+  background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.5) 50%,transparent 62%);
+  transform:translateX(-60%) rotate(8deg);
+}
+.keepsake:hover .gift-face:after{
+  animation:giftSweep 1.15s ease-out;
+}
+@keyframes giftSweep{to{transform:translateX(62%) rotate(8deg)}}
+
+/* VINYL: sleeve + record feel more alive */
+.record .disc{
+  transition:transform .75s cubic-bezier(.16,.8,.2,1),filter .5s;
+}
+.keepsake:hover .record .disc{
+  transform:translateX(22px) rotate(24deg);
+  filter:drop-shadow(0 18px 14px rgba(0,0,0,.28));
+}
+body[data-view="vinyl"] .disc{
+  animation:vinylIdle 8s linear infinite;
+}
+@keyframes vinylIdle{to{transform:rotate(360deg)}}
+
+/* SKETCHBOOK page-depth polish */
+body[data-view="sketchbook"] .sketch-page{
+  box-shadow:0 18px 40px rgba(48,54,42,.15);
+  transform-origin:left center;
+}
+body[data-view="sketchbook"] .sketch-page.turning{
+  animation:betterPageTurn 1.15s cubic-bezier(.2,.68,.22,1) forwards;
+}
+@keyframes betterPageTurn{
+  0%{transform:perspective(1300px) rotateY(0deg);filter:brightness(1)}
+  45%{filter:brightness(.88);box-shadow:18px 12px 34px rgba(28,35,24,.2)}
+  100%{transform:perspective(1300px) rotateY(-178deg);filter:brightness(.98)}
+}
+
+/* LETTER PAGE paper reveal */
+body[data-view="letter"] .paper,
+body[data-view="letters"] .letter-card{
+  animation:paperIn .72s cubic-bezier(.18,.8,.2,1) both;
+}
+@keyframes paperIn{
+  from{opacity:0;transform:translateY(22px) scale(.97)}
+  to{opacity:1;transform:none}
+}
+
+/* WEBTOON: panel cinematic entrances */
+body[data-view="webtoon"] .comic img,
+body[data-view="webtoon"] .panel{
+  animation:webtoonPanelIn .8s cubic-bezier(.18,.78,.2,1) both;
+}
+body[data-view="webtoon"] .comic img:nth-child(2){animation-delay:.08s}
+body[data-view="webtoon"] .comic img:nth-child(3){animation-delay:.16s}
+body[data-view="webtoon"] .comic img:nth-child(4){animation-delay:.24s}
+@keyframes webtoonPanelIn{
+  from{opacity:0;transform:translateY(28px) scale(.985);filter:blur(5px)}
+  to{opacity:1;transform:none;filter:none}
+}
+
+/* =========================================================
+   POKEMON — TRUE TWO-HALF RIP
+   ========================================================= */
+.pokemon-pack{
+  overflow:visible!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.pokemon-pack .pack-whole,
+.pokemon-pack .pack-half{
+  position:absolute;
+  inset:0;
+  border-radius:22px;
+  overflow:hidden;
+}
+.pokemon-pack .pack-whole{
+  z-index:2;
+}
+.pokemon-pack .pack-half{
+  z-index:3;
+  pointer-events:none;
+  opacity:0;
+}
+.pokemon-pack .left-half{
+  clip-path:polygon(0 0,54% 0,49% 9%,53% 18%,48% 29%,52% 39%,47% 49%,52% 60%,48% 70%,53% 81%,49% 90%,53% 100%,0 100%);
+  transform-origin:100% 50%;
+}
+.pokemon-pack .right-half{
+  clip-path:polygon(46% 0,100% 0,100% 100%,47% 100%,51% 90%,47% 81%,52% 70%,48% 60%,53% 49%,48% 39%,52% 29%,47% 18%,51% 9%);
+  transform-origin:0 50%;
+}
+.pokemon-pack.pre-rip .pack-half{
+  opacity:1;
+}
+.pokemon-pack.pre-rip .pack-whole{
+  opacity:0;
+}
+.rip-core{
+  position:absolute;
+  left:50%;top:4%;
+  width:5px;height:92%;
+  transform:translateX(-50%) scaleY(0);
+  transform-origin:top;
+  background:linear-gradient(to bottom,rgba(255,255,255,.95),rgba(130,161,255,.8),rgba(255,255,255,.95));
+  box-shadow:0 0 14px #dce7ff,0 0 34px rgba(108,143,255,.9);
+  z-index:6;
+  opacity:0;
+}
+.pokemon-pack.pre-rip .rip-core{
+  opacity:1;
+  animation:ripCore .4s ease-out forwards;
+}
+@keyframes ripCore{
+  from{transform:translateX(-50%) scaleY(0)}
+  to{transform:translateX(-50%) scaleY(1)}
+}
+.pokemon-pack.opened .left-half{
+  animation:packHalfLeft 1.25s cubic-bezier(.12,.78,.16,1) forwards;
+}
+.pokemon-pack.opened .right-half{
+  animation:packHalfRight 1.25s cubic-bezier(.12,.78,.16,1) forwards;
+}
+@keyframes packHalfLeft{
+  0%{transform:translateX(0) rotateZ(0) rotateY(0) scale(1);opacity:1}
+  28%{transform:translateX(-24px) rotateZ(-7deg) rotateY(-6deg) scale(1.02)}
+  68%{transform:translateX(-130px) translateY(-40px) rotateZ(-24deg) rotateY(-18deg) scale(.96);opacity:1}
+  100%{transform:translateX(-260px) translateY(-110px) rotateZ(-48deg) rotateY(-28deg) scale(.82);opacity:0}
+}
+@keyframes packHalfRight{
+  0%{transform:translateX(0) rotateZ(0) rotateY(0) scale(1);opacity:1}
+  28%{transform:translateX(24px) rotateZ(7deg) rotateY(6deg) scale(1.02)}
+  68%{transform:translateX(130px) translateY(-40px) rotateZ(24deg) rotateY(18deg) scale(.96);opacity:1}
+  100%{transform:translateX(260px) translateY(-110px) rotateZ(48deg) rotateY(28deg) scale(.82);opacity:0}
+}
+.pokemon-pack.opened .rip-core{
+  animation:ripFlash .75s ease-out forwards;
+}
+@keyframes ripFlash{
+  0%{opacity:1;filter:blur(0)}
+  60%{opacity:1;filter:blur(2px)}
+  100%{opacity:0;filter:blur(8px)}
+}
+.pokemon-stage.opening-sequence{
+  animation:stageBuild 1.6s ease both;
+}
+@keyframes stageBuild{
+  0%{filter:brightness(1)}
+  55%{filter:brightness(1.12)}
+  100%{filter:brightness(1)}
+}
+.pokemon-stage.opening-sequence .pokemon-aura{
+  animation:auraBoom 1.7s cubic-bezier(.16,.82,.2,1);
+}
+@keyframes auraBoom{
+  0%{transform:translateX(-50%) scale(.8);opacity:.4}
+  55%{transform:translateX(-50%) scale(1.26);opacity:1}
+  100%{transform:translateX(-50%) scale(1.05);opacity:.7}
+}
+
+/* card reveals feel like they come out of the split pack */
+.pokemon-reveal.shown:not(.finale){
+  animation:cardEmerge 1.05s cubic-bezier(.14,.84,.18,1) both;
+}
+@keyframes cardEmerge{
+  0%{opacity:0;transform:translateY(-40px) scale(.72) rotateX(-16deg);filter:blur(8px)}
+  55%{opacity:1;transform:translateY(10px) scale(1.045) rotateX(2deg);filter:blur(0)}
+  100%{opacity:1;transform:none}
+}
+
+/* Final GIF = slowest and most dramatic */
+.pokemon-reveal.finale.finale-entering.shown{
+  animation:finaleRevealUltra 7.2s cubic-bezier(.1,.72,.14,1) forwards!important;
+}
+@keyframes finaleRevealUltra{
+  0%{opacity:0;transform:translateY(170px) scale(.42) rotate(-7deg);filter:blur(24px) brightness(.35) saturate(.5)}
+  12%{opacity:.08}
+  32%{opacity:.28;transform:translateY(110px) scale(.58) rotate(-4deg);filter:blur(16px) brightness(.5)}
+  52%{opacity:.52;transform:translateY(58px) scale(.74) rotate(-2deg);filter:blur(9px) brightness(.68)}
+  72%{opacity:.78;transform:translateY(18px) scale(.9) rotate(-.6deg);filter:blur(3px) brightness(.88)}
+  88%{opacity:.96;transform:translateY(-6px) scale(1.03) rotate(.2deg);filter:blur(.5px) brightness(1.08)}
+  100%{opacity:1;transform:none;filter:none}
+}
+body.pokemon-finale-mode:after{
+  animation:finaleVignetteUltra 7.5s ease forwards!important;
+}
+@keyframes finaleVignetteUltra{
+  0%{opacity:0}
+  20%{opacity:.72}
+  68%{opacity:1}
+  100%{opacity:.3}
+}
+
+@media(max-width:700px){
+  .keepsake{min-height:270px;padding:22px 12px 20px}
+  .collection{gap:24px 16px}
+  .pokemon-pack.opened .left-half{animation-name:packHalfLeftMobile}
+  .pokemon-pack.opened .right-half{animation-name:packHalfRightMobile}
+}
+@keyframes packHalfLeftMobile{
+  0%{transform:none;opacity:1}
+  100%{transform:translate(-150px,-90px) rotate(-42deg) scale(.78);opacity:0}
+}
+@keyframes packHalfRightMobile{
+  0%{transform:none;opacity:1}
+  100%{transform:translate(150px,-90px) rotate(42deg) scale(.78);opacity:0}
+}
