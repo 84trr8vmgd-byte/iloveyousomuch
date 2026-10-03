@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Happy Birthday, my love</title>
-  <link rel="stylesheet" href="style.css?v=17-open-animations">
+  <link rel="stylesheet" href="style.css?v=18-fast-epic">
 </head>
 <body data-view="home" class="pretty-site">
   <!-- Hintergrund und Startansicht; die Inhalte stehen direkt im Script darunter. -->
@@ -290,13 +290,20 @@ if(view==='pokemon'){
   if(pack){
     pack.addEventListener('click',()=>{
       if(pack.classList.contains('opened')) return;
-      pack.classList.add('splitting');
-      setTimeout(()=>pack.classList.add('opened'),420);
+      const stage=document.querySelector('.pokemon-stage');
+      pack.classList.add('charging');
+      stage?.classList.add('pokemon-opening');
+
+      setTimeout(()=>pack.classList.add('splitting'),180);
+      setTimeout(()=>stage?.classList.add('impact'),360);
+      setTimeout(()=>pack.classList.add('opened'),430);
+
       setTimeout(()=>{
+        stage?.classList.remove('impact');
         pack.classList.add('gone');
         showNext();
         if(next) next.hidden=cards.length<=1;
-      },760);
+      },980);
     });
   }
   if(next) next.addEventListener('click',showNext);
@@ -340,12 +347,13 @@ document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click'
  if(!href)return;
 
  const type=el.dataset.open;
- const isOpeningObject=['letters','webtoon','sketchbook'].includes(type);
+ const animatedTypes=['letters','webtoon','sketchbook','vinyl'];
+ const timing={letters:560,webtoon:650,sketchbook:650,vinyl:720};
 
- if(isOpeningObject){
+ if(animatedTypes.includes(type)){
    if(el.classList.contains('opening-active')) return;
    el.classList.add('opening-active');
-   await pause(type==='letters'?900:1050);
+   await pause(timing[type]||520);
  }
 
  document.querySelector('.record-theatre')?.remove();
