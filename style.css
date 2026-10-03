@@ -4603,3 +4603,134 @@ header::before{
     100%{transform:translate(82px,-42px) rotate(24deg) scale(.9);opacity:0}
   }
 }
+
+
+/* ============================================================
+   CLEAN HOVER v20 — no beams, no clipped hover animation
+   ============================================================ */
+
+/* Remove all beam / orb / radial-light overlays that were interfering */
+.glow-orbs,
+.ambient-orbs{
+  display:none!important;
+}
+body::before,
+body::after{
+  content:none!important;
+}
+.animation-stage::before,
+.animation-stage::after,
+.keepsake.opening-active .animation-stage::after{
+  content:none!important;
+}
+
+/* Keep the card surface clean */
+.keepsake{
+  overflow:visible!important;
+  isolation:isolate;
+}
+.animation-stage{
+  overflow:visible!important;
+  min-height:220px;
+  transform-style:preserve-3d;
+}
+
+/* One continuous idle animation. Hover does NOT replace it. */
+.animated-object{
+  animation:iconIdleFloat 3s ease-in-out infinite!important;
+  transform-origin:center center;
+  will-change:transform;
+  transition:
+    scale .28s cubic-bezier(.2,.8,.2,1),
+    filter .28s ease!important;
+}
+@keyframes iconIdleFloat{
+  0%,100%{transform:translateY(-4px) rotate(-.7deg)}
+  50%{transform:translateY(-10px) rotate(.7deg)}
+}
+
+/* Hover simply enlarges the animated object while its animation continues */
+.keepsake:hover .animated-object,
+.keepsake:focus-visible .animated-object{
+  animation:iconIdleFloat 3s ease-in-out infinite!important;
+  scale:1.09;
+  filter:drop-shadow(0 28px 24px rgba(34,28,42,.24));
+}
+
+/* Stop old hover rules from overriding/restarting transforms */
+.keepsake:hover .object,
+.keepsake:focus-visible .object{
+  transform:none!important;
+}
+.keepsake:hover .cinematic-object,
+.keepsake:focus-visible .cinematic-object{
+  animation:none!important;
+}
+.keepsake:hover .animated-object.cinematic-object,
+.keepsake:focus-visible .animated-object.cinematic-object{
+  animation:iconIdleFloat 3s ease-in-out infinite!important;
+}
+
+/* Card itself only gets a small lift, so icon has room to animate */
+.keepsake:hover,
+.keepsake:focus-visible{
+  transform:translateY(-6px) scale(1.012)!important;
+  overflow:visible!important;
+}
+
+/* Extra room around object stage prevents any clipping */
+.collection{
+  overflow:visible!important;
+}
+.keepsake,
+.animation-stage{
+  contain:none!important;
+}
+.animation-stage .object{
+  overflow:visible!important;
+}
+
+/* Preserve click/open animations: they temporarily take control */
+.keepsake.opening-active .animated-object{
+  animation:none!important;
+  scale:1!important;
+}
+
+/* Remove old rotating/shimmer beam effects */
+.keepsake::before{
+  display:none!important;
+}
+.gift-face::after,
+.book .pages::after,
+.pokemon-card-media::after{
+  display:none!important;
+}
+
+/* Keep decorative symbols, but without beam-like glows */
+.symbol-sky span{
+  filter:none!important;
+  opacity:.48;
+}
+
+/* Softer card glow instead of beams */
+.keepsake{
+  box-shadow:
+    0 24px 60px rgba(30,24,38,.12),
+    inset 0 1px 0 rgba(255,255,255,.7)!important;
+}
+.keepsake:hover,
+.keepsake:focus-visible{
+  box-shadow:
+    0 30px 72px rgba(30,24,38,.16),
+    inset 0 1px 0 rgba(255,255,255,.82)!important;
+}
+
+@media(max-width:700px){
+  .animated-object{
+    animation-duration:3.3s!important;
+  }
+  .keepsake:hover .animated-object,
+  .keepsake:focus-visible .animated-object{
+    scale:1.055;
+  }
+}
