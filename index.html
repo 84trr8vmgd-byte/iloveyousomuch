@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Happy Birthday, my love</title>
-  <link rel="stylesheet" href="style.css?v=12-repaired">
+  <link rel="stylesheet" href="style.css?v=13-audio-split">
 </head>
-<body data-view="home">
+<body data-view="home" class="pretty-site">
   <!-- Hintergrund und Startansicht; die Inhalte stehen direkt im Script darunter. -->
   <div class="cloud-sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 <div class="heart-sky" aria-hidden="true"><span style="--i:0;--x:3%;--size:12px;--duration:16s;--delay:-0s">✦</span><span style="--i:1;--x:20%;--size:18px;--duration:19s;--delay:-2s">✦</span><span style="--i:2;--x:37%;--size:24px;--duration:22s;--delay:-4s">✦</span><span style="--i:3;--x:54%;--size:12px;--duration:25s;--delay:-6s">✦</span><span style="--i:4;--x:71%;--size:18px;--duration:28s;--delay:-8s">✦</span><span style="--i:5;--x:88%;--size:24px;--duration:16s;--delay:-10s">✦</span><span style="--i:6;--x:5%;--size:12px;--duration:19s;--delay:-12s">✦</span><span style="--i:7;--x:22%;--size:18px;--duration:22s;--delay:-14s">✦</span><span style="--i:8;--x:39%;--size:24px;--duration:25s;--delay:-16s">✦</span><span style="--i:9;--x:56%;--size:12px;--duration:28s;--delay:-18s">✦</span><span style="--i:10;--x:73%;--size:18px;--duration:16s;--delay:-20s">✦</span><span style="--i:11;--x:90%;--size:24px;--duration:19s;--delay:-22s">✦</span><span style="--i:12;--x:7%;--size:12px;--duration:22s;--delay:-24s">✦</span><span style="--i:13;--x:24%;--size:18px;--duration:25s;--delay:-26s">✦</span><span style="--i:14;--x:41%;--size:24px;--duration:28s;--delay:-28s">✦</span><span style="--i:15;--x:58%;--size:12px;--duration:16s;--delay:-30s">✦</span></div>
@@ -91,108 +91,59 @@ window.CONTENT = {
     ]
   },
 
-  // BRIEFE: title = Bezeichnung, text = Brieftext, image = optionales PNG.
+  // BRIEFE: title = Bezeichnung, audio = MP3-Pfad, image = optionales PNG.
+  // Beispiel: audio: "assets/letters/open-if-sad.mp3"
   letters: [
     // BRIEF 01
-    { title: "Open if you're sad…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you're sad…", audio: "", image: "" },
     // BRIEF 02
-    { title: "Open if you miss me…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you miss me…", audio: "", image: "" },
     // BRIEF 03
-    { title: "Open if you can't sleep…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you can't sleep…", audio: "", image: "" },
     // BRIEF 04
-    { title: "Open if you need a hug…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you need a hug…", audio: "", image: "" },
     // BRIEF 05
-    { title: "Open if you feel happy…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you feel happy…", audio: "", image: "" },
     // BRIEF 06
-    { title: "Open if it's raining…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if it's raining…", audio: "", image: "" },
     // BRIEF 07
-    { title: "Open if you're overthinking…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you're overthinking…", audio: "", image: "" },
     // BRIEF 08
-    { title: "Open if you need courage…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you need courage…", audio: "", image: "" },
     // BRIEF 09
-    { title: "Open if you feel lonely…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you feel lonely…", audio: "", image: "" },
     // BRIEF 10
-    { title: "Open if you need a smile…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you need a smile…", audio: "", image: "" },
     // BRIEF 11
-    { title: "Open if you had a bad day…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you had a bad day…", audio: "", image: "" },
     // BRIEF 12
-    { title: "Open if you want to dream…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you want to dream…", audio: "", image: "" },
     // BRIEF 13
-    { title: "Open if you're proud of yourself…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you're proud of yourself…", audio: "", image: "" },
     // BRIEF 14
-    { title: "Open if you need a break…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you need a break…", audio: "", image: "" },
     // BRIEF 15
-    { title: "Open if you feel lost…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you feel lost…", audio: "", image: "" },
     // BRIEF 16
-    { title: "Open if it's your birthday…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if it's your birthday…", audio: "", image: "" },
     // BRIEF 17
-    { title: "Open if you need motivation…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you need motivation…", audio: "", image: "" },
     // BRIEF 18
-    { title: "Open if you're bored…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you're bored…", audio: "", image: "" },
     // BRIEF 19
-    { title: "Open if you want a memory…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you want a memory…", audio: "", image: "" },
     // BRIEF 20
-    { title: "Open if you need reassurance…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you need reassurance…", audio: "", image: "" },
     // BRIEF 21
-    { title: "Open if you're feeling curious…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you're feeling curious…", audio: "", image: "" },
     // BRIEF 22
-    { title: "Open if you need some magic…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you need some magic…", audio: "", image: "" },
     // BRIEF 23
-    { title: "Open if you want an adventure…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you want an adventure…", audio: "", image: "" },
     // BRIEF 24
-    { title: "Open if you need to feel loved…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" },
+    { title: "Open if you need to feel loved…", audio: "", image: "" },
     // BRIEF 25
-    { title: "Open if you just want to…",
-      text: "Hier kommt später dein Brieftext hin.",
-      image: "" }
+    { title: "Open if you just want to…", audio: "", image: "" }
   ]
 };
 /* FARBSTIMMUNGEN: Hintergrund, Verlauf, Schrift, kleine Texte, Akzent, Herzen/Sterne. */
@@ -284,9 +235,18 @@ if(view==='pokemon'){
       '</div><p>'+(isGif?'final surprise ♡':'memory '+(i+1))+'</p></article>';
   }).join('');
   app.innerHTML=back()+heading('Pokémon surprise','Tap the pack to rip it open.')+
-  '<section class="pokemon-stage"><button class="pokemon-pack" id="pokemon-pack" type="button" aria-label="Open Pokémon pack">'+
+  '<section class="pokemon-stage"><button class="pokemon-pack split-pack" id="pokemon-pack" type="button" aria-label="Open Pokémon pack">
+      <span class="pack-base">'+
     (cfg.packCover?'<img src="'+cfg.packCover+'" alt="Pokémon pack cover">':'<span class="pack-face"><span class="pack-shine"></span><b>POKÉMON</b><em>special pack</em><small>tap to open</small></span>')+
-    '<span class="tear tear-left"></span><span class="tear tear-right"></span></button>'+
+    '<span class="tear tear-left"></span><span class="tear tear-right"></span></span>
+      <span class="split-left" aria-hidden="true">'+
+    (cfg.packCover?'<img src="'+cfg.packCover+'" alt="Pokémon pack cover">':'<span class="pack-face"><span class="pack-shine"></span><b>POKÉMON</b><em>special pack</em><small>tap to open</small></span>')+
+    '<span class="tear tear-left"></span><span class="tear tear-right"></span></span>
+      <span class="split-right" aria-hidden="true">'+
+    (cfg.packCover?'<img src="'+cfg.packCover+'" alt="Pokémon pack cover">':'<span class="pack-face"><span class="pack-shine"></span><b>POKÉMON</b><em>special pack</em><small>tap to open</small></span>')+
+    '<span class="tear tear-left"></span><span class="tear tear-right"></span></span>
+      <span class="split-flash" aria-hidden="true"></span>
+    </button>'+
     '<div class="pokemon-reveal-stack" id="pokemon-reveal-stack">'+revealMarkup+'</div>'+
     '<button class="pokemon-next" id="pokemon-next" type="button" hidden>Reveal next</button></section>';
   const pack=document.getElementById('pokemon-pack');
@@ -302,7 +262,8 @@ if(view==='pokemon'){
   };
   pack.addEventListener('click',()=>{
     if(pack.classList.contains('opened')) return;
-    pack.classList.add('opened');
+    pack.classList.add('splitting');
+    setTimeout(()=>pack.classList.add('opened'),420);
     setTimeout(()=>{ pack.classList.add('gone'); showNext(); next.hidden=cards.length<=1; },760);
   });
   next.addEventListener('click',showNext);
