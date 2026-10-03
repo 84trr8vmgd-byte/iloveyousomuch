@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Happy Birthday, my love</title>
-  <link rel="stylesheet" href="style.css?v=16-glow-motion">
+  <link rel="stylesheet" href="style.css?v=17-open-animations">
 </head>
 <body data-view="home" class="pretty-site">
   <!-- Hintergrund und Startansicht; die Inhalte stehen direkt im Script darunter. -->
@@ -333,16 +333,24 @@ if(view!=='pokemon' && view==='sketchbook') {
  }
  prev.onclick=()=>turn(-1);next.onclick=()=>turn(1);paint();
 }
-document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',e=>{
+document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',async e=>{
  if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||e.button!==0)return;
  e.preventDefault();
  const href=el.getAttribute('href');
  if(!href)return;
- opening=false;
- navigationToken++;
+
+ const type=el.dataset.open;
+ const isOpeningObject=['letters','webtoon','sketchbook'].includes(type);
+
+ if(isOpeningObject){
+   if(el.classList.contains('opening-active')) return;
+   el.classList.add('opening-active');
+   await pause(type==='letters'?900:1050);
+ }
+
  document.querySelector('.record-theatre')?.remove();
  document.body.classList.remove('opening-scene','leaving');
- el.classList.add('opening');
+
  if(location.hash===href){
    render();
    window.scrollTo(0,0);
