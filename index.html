@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Happy Birthday, my love</title>
-  <link rel="stylesheet" href="style.css?v=8-pokemon">
+  <link rel="stylesheet" href="style.css?v=9-clickfix">
 </head>
 <body data-view="home">
   <!-- Hintergrund und Startansicht; die Inhalte stehen direkt im Script darunter. -->
@@ -222,8 +222,6 @@ for (const [key,index] of Object.entries({webtoon:0,giftcard:4,sketchbook:6,viny
 cfg.giftcards = cfg.giftcards.map(src => src || PLACEHOLDERS[4]);
 cfg.comic = cfg.comic.map(src => src || PLACEHOLDERS[3]);
 cfg.sketchPages = cfg.sketchPages.map(page => page.map(src => src || PLACEHOLDERS[2]));
-cfg.treats = cfg.treats.map(item => ({...item, image:item.image || PLACEHOLDERS[7]}));
-
 /* 3. NAVIGATION UND ANIMATIONEN */
 const viewer=document.querySelector('#image-viewer');
 function showPicture(src,alt){const img=viewer.querySelector('img');img.src=src;img.alt=alt;viewer.showModal();}
@@ -261,10 +259,10 @@ function object(type) {
  if(type==='letters') return `<span class="object envelope"><span class="env-back"></span><span class="note"></span><span class="fold left-fold"></span><span class="fold right-fold"></span><span class="fold bottom-fold"></span><span class="flap"></span>${pic(C.seal,'seal')}</span>`;
  if(['webtoon','sketchbook'].includes(type)) return `<span class="object book ${type}"><span class="pages"></span><span class="inner-page">${pic(type==='webtoon' ? (C.comic[0]||C.covers.webtoon) : (C.sketchPages[0]?.[0]||C.covers.sketchbook),'opening-preview')}</span><span class="cover">${pic(C.covers[type])}</span></span>`;
  if(type==='giftcard') return `<span class="object gift"><span class="gift-face">${pic(C.covers.giftcard)}</span></span>`;
- if(type==='treats') return `<span class="object candy"><span class="wrapper wl"></span><span class="sweet">♡</span><span class="wrapper wr"></span></span>`;
+  if(type==='pokemon') return `<span class="object pokemon-pack-mini"><span class="pack-gloss"></span><span class="pack-badge">POKÉMON</span><span class="pack-sub">for you</span></span>`;
  return `<span class="object record"><span class="disc"></span><span class="sleeve">${pic(C.covers.vinyl)}</span></span>`;
 }
-const names={letters:'Letters',webtoon:'Webtoon',giftcard:'Giftcard',sketchbook:'Tiny sketchbook',treats:'Little treats',vinyl:'Our soundtrack'};
+const names={letters:'Letters',webtoon:'Webtoon',giftcard:'Giftcard',sketchbook:'Tiny sketchbook',pokemon:'Pokémon surprise',vinyl:'Our soundtrack'};
 function link(type,label=names[type],href=`#${type}`) {return `<a href="${href}" class="keepsake ${type}-link" data-open="${type}" aria-label="${esc(label)} öffnen">${object(type)}<span class="label">${esc(label)}</span></a>`;}
 if(view==='home') app.innerHTML=heading('Happy Birthday<br><em>my love.</em>','For you, always.')+`<section class="collection" aria-label="Deine Sammlung">${Object.keys(names).map(t=>link(t)).join('')}</section>`;
 if(view==='letters') app.innerHTML=back()+heading('Letters','For every version of your day.')+`<section class="letter-grid">${C.letters.map((l,i)=>link('letters',l.title,`#letter?id=${i}`)).join('')}</section>`;
@@ -308,10 +306,9 @@ if(view==='pokemon'){
     setTimeout(()=>{ pack.classList.add('gone'); showNext(); next.hidden=cards.length<=1; },760);
   });
   next.addEventListener('click',showNext);
-  return;
 }
 
-if(view==='vinyl') {
+if(view!=='pokemon' && view==='vinyl') {
  app.innerHTML=back()+heading('Our soundtrack.','One more song. Just us.')+`<section class="record-room ready">${turntable()}</section><div class="audio-panel"><audio controls preload="metadata" src="${esc(C.audio)}" aria-label="Musik abspielen oder pausieren"></audio><p id="audio-status" role="status"></p></div>`;
  const audio=app.querySelector('audio'); const room=app.querySelector('.record-room');
  const rain=document.createElement('div');rain.className='music-rain';rain.setAttribute('aria-hidden','true');
@@ -320,7 +317,7 @@ if(view==='vinyl') {
  ['pause','ended'].forEach(event=>audio.addEventListener(event,()=>{room.classList.remove('playing');document.body.classList.remove('music-playing');}));
  audio.addEventListener('error',()=>{document.querySelector('#audio-status').textContent='Die Musik ist gerade nicht verfügbar.';});
 }
-if(view==='sketchbook') {
+if(view!=='pokemon' && view==='sketchbook') {
  let page=0,busy=false;
  app.innerHTML=back()+heading('Tiny sketchbook')+`<div class="spread" aria-label="Skizzenbuch"><div id="left-page" class="sketch-page"></div><div id="right-page" class="sketch-page"></div><div class="curl-sheet" aria-hidden="true"></div></div><nav class="page-controls" aria-label="Buchseiten"><button id="prev">← Zurück</button><span id="page-count" aria-live="polite"></span><button id="next">Weiter →</button></nav>`;
  const pages=C.sketchPages, spread=app.querySelector('.spread'),left=app.querySelector('#left-page'),right=app.querySelector('#right-page'),sheet=app.querySelector('.curl-sheet'),prev=app.querySelector('#prev'),next=app.querySelector('#next'),count=app.querySelector('#page-count');
@@ -342,7 +339,6 @@ if(view==='sketchbook') {
  }
  prev.onclick=()=>turn(-1);next.onclick=()=>turn(1);paint();
 }
-if(view==='treats') app.innerHTML=back()+heading('Little treats','Pick a sweet little surprise.')+`<section class="treat-cloud" aria-label="Kleine Überraschungen">${C.treats.map((t,i)=>`<div class="treat-orbit" style="--i:${i};--delay:-${i*1.2}s"><button class="treat-flip" aria-label="${esc(t.title)} aufdecken" aria-pressed="false"><span class="treat-front">${object('treats')}</span><span class="treat-back">${pic(t.image,'',t.title)}</span></button></div>`).join('')}</section>`;
 document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',async e=>{
  if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||e.button!==0)return;
  e.preventDefault();if(opening)return;opening=true;
