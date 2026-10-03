@@ -3930,3 +3930,146 @@ button:hover:not(:disabled){
     scroll-behavior:auto!important;
   }
 }
+
+
+/* ============================================================
+   REAL OPEN ANIMATIONS v17
+   ============================================================ */
+
+/* ---------- LETTER / ENVELOPE ---------- */
+.keepsake.letters-link{
+  perspective:1200px;
+}
+.keepsake.letters-link .envelope{
+  transform-style:preserve-3d;
+}
+.keepsake.letters-link.opening-active .envelope{
+  animation:envelopeLiftOpen .9s cubic-bezier(.18,.8,.2,1) forwards;
+}
+.keepsake.letters-link.opening-active .flap{
+  animation:envelopeFlapOpen .72s cubic-bezier(.16,.8,.18,1) forwards;
+}
+.keepsake.letters-link.opening-active .left-fold{
+  animation:leftFoldOpen .72s .1s cubic-bezier(.16,.8,.18,1) forwards;
+}
+.keepsake.letters-link.opening-active .right-fold{
+  animation:rightFoldOpen .72s .1s cubic-bezier(.16,.8,.18,1) forwards;
+}
+.keepsake.letters-link.opening-active .bottom-fold{
+  animation:bottomFoldOpen .72s .12s cubic-bezier(.16,.8,.18,1) forwards;
+}
+.keepsake.letters-link.opening-active .note{
+  z-index:8;
+  animation:letterSlideOut .8s .18s cubic-bezier(.14,.82,.18,1) forwards;
+}
+.keepsake.letters-link.opening-active .seal{
+  animation:sealPop .38s ease-out forwards;
+}
+@keyframes envelopeLiftOpen{
+  0%{transform:translateY(0) scale(1)}
+  45%{transform:translateY(-8px) scale(1.03)}
+  100%{transform:translateY(-14px) scale(1.05)}
+}
+@keyframes envelopeFlapOpen{
+  from{transform:rotateX(0deg)}
+  to{transform:rotateX(-178deg)}
+}
+@keyframes leftFoldOpen{
+  from{transform:rotateY(0deg)}
+  to{transform:rotateY(-80deg)}
+}
+@keyframes rightFoldOpen{
+  from{transform:rotateY(0deg)}
+  to{transform:rotateY(80deg)}
+}
+@keyframes bottomFoldOpen{
+  from{transform:rotateX(0deg)}
+  to{transform:rotateX(72deg)}
+}
+@keyframes letterSlideOut{
+  0%{transform:translateY(0) scale(.96);box-shadow:none}
+  65%{transform:translateY(-92px) scale(1.02);box-shadow:0 24px 42px rgba(65,45,40,.18)}
+  100%{transform:translateY(-108px) scale(1.04);box-shadow:0 28px 48px rgba(65,45,40,.2)}
+}
+@keyframes sealPop{
+  0%{transform:scale(1);opacity:1}
+  55%{transform:scale(1.18);opacity:.8}
+  100%{transform:scale(.65);opacity:0}
+}
+
+/* ---------- WEBTOON / SKETCHBOOK ---------- */
+.keepsake.webtoon-link,
+.keepsake.sketchbook-link{
+  perspective:1500px;
+}
+.keepsake.webtoon-link .book,
+.keepsake.sketchbook-link .book{
+  transform-style:preserve-3d;
+}
+.keepsake.webtoon-link.opening-active .book,
+.keepsake.sketchbook-link.opening-active .book{
+  animation:bookLiftOpen 1.05s cubic-bezier(.16,.82,.18,1) forwards;
+}
+.keepsake.webtoon-link.opening-active .cover,
+.keepsake.sketchbook-link.opening-active .cover{
+  animation:bookCoverOpen 1s cubic-bezier(.16,.82,.18,1) forwards;
+  transform-origin:left center;
+}
+.keepsake.webtoon-link.opening-active .inner-page,
+.keepsake.sketchbook-link.opening-active .inner-page{
+  animation:innerPageReveal .9s .18s ease-out forwards;
+}
+.keepsake.webtoon-link.opening-active .pages,
+.keepsake.sketchbook-link.opening-active .pages{
+  animation:pageBlockShift .95s cubic-bezier(.16,.82,.18,1) forwards;
+}
+@keyframes bookLiftOpen{
+  0%{transform:translateY(0) rotateX(0deg) scale(1)}
+  45%{transform:translateY(-10px) rotateX(3deg) scale(1.025)}
+  100%{transform:translateY(-14px) rotateX(4deg) scale(1.045)}
+}
+@keyframes bookCoverOpen{
+  0%{transform:rotateY(0deg)}
+  70%{transform:rotateY(-155deg)}
+  100%{transform:rotateY(-178deg)}
+}
+@keyframes innerPageReveal{
+  0%{transform:translateZ(0) scale(.98);filter:brightness(.88)}
+  100%{transform:translateZ(16px) scale(1);filter:brightness(1)}
+}
+@keyframes pageBlockShift{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(6px)}
+}
+
+/* opening glow */
+.keepsake.opening-active{
+  box-shadow:
+    0 42px 110px rgba(28,20,38,.24),
+    0 0 58px color-mix(in srgb,var(--accent) 26%,transparent),
+    inset 0 1px 0 rgba(255,255,255,.92);
+}
+.keepsake.opening-active::after{
+  opacity:1;
+  animation:openingSpark .55s ease-in-out infinite alternate;
+}
+@keyframes openingSpark{
+  to{transform:scale(1.5) rotate(25deg);filter:drop-shadow(0 0 14px var(--accent))}
+}
+
+/* Keep hover animations from fighting with click-open animations */
+.keepsake.opening-active .animated-object{
+  animation:none!important;
+}
+.keepsake.letters-link.opening-active .envelope,
+.keepsake.webtoon-link.opening-active .book,
+.keepsake.sketchbook-link.opening-active .book{
+  filter:drop-shadow(0 34px 28px rgba(34,28,42,.28));
+}
+
+@media(max-width:700px){
+  @keyframes letterSlideOut{
+    0%{transform:translateY(0) scale(.96)}
+    100%{transform:translateY(-76px) scale(1.02)}
+  }
+}
