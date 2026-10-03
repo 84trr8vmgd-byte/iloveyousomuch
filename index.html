@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Happy Birthday, my love</title>
-  <link rel="stylesheet" href="style.css?v=13-audio-split">
+  <link rel="stylesheet" href="style.css?v=14-clickfix">
 </head>
 <body data-view="home" class="pretty-site">
   <!-- Hintergrund und Startansicht; die Inhalte stehen direkt im Script darunter. -->
@@ -180,7 +180,10 @@ viewer.querySelector('button').onclick=()=>viewer.close();
 viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.close();});
 let opening=false, navigationToken=0;
 const pause = ms => new Promise(resolve=>setTimeout(resolve,window.matchMedia('(prefers-reduced-motion: reduce)').matches?20:ms));
-function render(){
+function render() {
+ opening=false;
+ document.body.classList.remove('opening-scene','leaving');
+ document.querySelector('.record-theatre')?.remove();
  navigationToken++;opening=false;
  document.body.classList.remove('opening-scene','leaving');
 document.querySelectorAll('audio').forEach(a=>a.pause());
@@ -300,18 +303,17 @@ if(view!=='pokemon' && view==='sketchbook') {
  }
  prev.onclick=()=>turn(-1);next.onclick=()=>turn(1);paint();
 }
-document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',async e=>{
+document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',e=>{
  if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||e.button!==0)return;
- e.preventDefault();if(opening)return;opening=true;
- const token=++navigationToken;
- el.classList.add('opening');document.body.classList.add('opening-scene');
- if(el.dataset.open==='vinyl'){
- const theatre=document.createElement('div');theatre.className='record-theatre';theatre.setAttribute('aria-hidden','true');theatre.innerHTML=turntable();document.body.append(theatre);await pause(4600);
-}else{await pause(2100);}
- if(token!==navigationToken)return;
- document.body.classList.add('leaving');await pause(310);
- if(token!==navigationToken)return;
- location.hash=el.getAttribute('href');
+ e.preventDefault();
+ const href=el.getAttribute('href');
+ if(!href)return;
+ opening=false;
+ navigationToken++;
+ document.querySelector('.record-theatre')?.remove();
+ document.body.classList.remove('opening-scene','leaving');
+ el.classList.add('opening');
+ location.hash=href;
 }));
 document.querySelectorAll('.treat-flip').forEach(b=>b.onclick=()=>{const flipped=b.classList.toggle('flipped');b.setAttribute('aria-pressed',flipped);const img=b.querySelector('.treat-back img');if(img)showPicture(img.src,img.alt);});
 function motionToggle(id,target,off,on){const b=document.querySelector(id);if(b)b.onclick=()=>{const paused=document.querySelector(target).classList.toggle('paused');b.setAttribute('aria-pressed',paused);b.textContent=paused?on:off;};}
